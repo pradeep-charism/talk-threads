@@ -7,7 +7,7 @@ package nus.edu.sg.basics;
 public class SimpleRunnable implements Runnable {
     @Override
     public void run() {
-        System.out.println("invoked run()");
-        throw new RuntimeException("mandatory runtime exception thrown");
+        System.out.println("invoked runnable run()");
+        throw new RuntimeException("mandatory runtime exception  - runnable");
     }
 }
