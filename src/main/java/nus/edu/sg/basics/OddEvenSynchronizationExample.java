@@ -1,5 +1,7 @@
 package nus.edu.sg.basics;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @Author Pradeep Kumar
  * @create 3/8/2021 4:08 PM
@@ -22,25 +24,21 @@ public class OddEvenSynchronizationExample {
 
 class NumberPrinter {
 
-    volatile int number = 0;
+    Object lock = new Object();
 
-    public  synchronized int printNumbers(String printerName) {
-        if (number != 20) {
-            try {
-                Thread.sleep(30);
-            } catch (InterruptedException e) {
-                System.out.println("Sleep is interrupted");
-            }
-            System.out.println(printerName + "::" + number++);
-            return number;
-        }
-        return -1;
+    AtomicInteger number = new AtomicInteger(0);
+
+    public  int increment() {
+        return number.incrementAndGet();
+    }
+
+    public  int currentValue() {
+        return number.get();
     }
 }
 
 class OddNumberPrinter implements Runnable {
 
-    int limitReached;
     NumberPrinter printer;
 
     public OddNumberPrinter(NumberPrinter printer) {
@@ -49,9 +47,13 @@ class OddNumberPrinter implements Runnable {
 
     @Override
     public void run() {
-        do {
-            limitReached = printer.printNumbers("OddNumberPrinter");
-        } while (limitReached != -1);
+        while (printer.currentValue() < 11) {
+            if (printer.currentValue() % 2 == 0) {
+                int increment = printer.increment();
+                System.out.println(Thread.currentThread().getName() + "->" + increment);
+            }
+
+        }
     }
 }
 
@@ -66,8 +68,11 @@ class EvenNumberPrinter implements Runnable {
 
     @Override
     public void run() {
-        do {
-            limitReached = printer.printNumbers("EvenNumberPrinter");
-        } while (limitReached != -1);
+        while (printer.currentValue() < 11) {
+            if (printer.currentValue() % 2 == 1) {
+                int increment = printer.increment();
+                System.out.println(Thread.currentThread().getName() + "->" + increment);
+            }
+        }
     }
 }
