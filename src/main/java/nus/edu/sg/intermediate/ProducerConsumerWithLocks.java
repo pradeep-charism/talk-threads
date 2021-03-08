@@ -33,10 +33,11 @@ public class ProducerConsumerWithLocks {
         producersAndConsumers.addAll(producers);
         producersAndConsumers.addAll(consumers);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(8);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
 
         try {
             List<Future<String>> futures = executorService.invokeAll(producersAndConsumers);
+            System.out.println("Producers and consumer started...");
 
             futures.forEach(
                     future -> {
@@ -51,22 +52,6 @@ public class ProducerConsumerWithLocks {
             executorService.shutdown();
             System.out.println("Executor is shutdown");
         }
-    }
-
-    private List<Consumer> createConsumers() {
-        List<Consumer> producers = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            producers.add(new Consumer());
-        }
-        return producers;
-    }
-
-    private List<Producer> createProducers() {
-        List<Producer> producers = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            producers.add(new Producer());
-        }
-        return producers;
     }
 
     class Consumer implements Callable<String> {
@@ -112,5 +97,21 @@ public class ProducerConsumerWithLocks {
             }
             return "Produced " + (count - 1);
         }
+    }
+
+    private List<Consumer> createConsumers() {
+        List<Consumer> producers = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            producers.add(new Consumer());
+        }
+        return producers;
+    }
+
+    private List<Producer> createProducers() {
+        List<Producer> producers = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            producers.add(new Producer());
+        }
+        return producers;
     }
 }
