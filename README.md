@@ -1,2 +1,2 @@
 # talk-threads
-Collection thread programs
+Collection of thread programs
