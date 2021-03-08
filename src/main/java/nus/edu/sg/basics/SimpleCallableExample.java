@@ -14,12 +14,14 @@ public class SimpleCallableExample {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         SimpleCallable task = new SimpleCallable();
 
-        Future<String> future = executorService.submit(task);
-        String output = future.get();
-        System.out.println("Value from task: " + output);
-        String output2 = future.get(100, TimeUnit.MILLISECONDS);
-        System.out.println("Value from task: " + output2);
-
-        executorService.shutdown();
+        try {
+            Future<String> future = executorService.submit(task);
+            String output = future.get();
+            System.out.println("Value from task: " + output);
+            String output2 = future.get(100, TimeUnit.MILLISECONDS);
+            System.out.println("Value from task: " + output2);
+        } finally {
+            executorService.shutdown();
+        }
     }
 }
