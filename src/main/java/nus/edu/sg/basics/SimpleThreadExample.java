@@ -1,4 +1,4 @@
-package nus.edu.sg;
+package nus.edu.sg.basics;
 
 /**
  * @Author Pradeep Kumar
