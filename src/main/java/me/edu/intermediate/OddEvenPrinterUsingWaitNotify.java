@@ -17,6 +17,26 @@ public class OddEvenPrinterUsingWaitNotify {
 
     private final AtomicInteger counter = new AtomicInteger(0);
 
+    public synchronized void printOddNumbers() throws InterruptedException {
+        while (counter.get() < MAX_COUNT) {
+            if (counter.get() % 2 == 0) {
+                System.out.println("Thread: " + Thread.currentThread().getName() + "-> " + counter.incrementAndGet());
+                notify();
+            }
+            wait();
+        }
+    }
+
+    public synchronized void printEvenNumbers() throws InterruptedException {
+        while (counter.get() < MAX_COUNT) {
+            if (counter.get() % 2 == 1) {
+                System.out.println("Thread: " + Thread.currentThread().getName() + "-> " + counter.incrementAndGet());
+                notify();
+            }
+            wait();
+        }
+    }
+
     public static void main(String[] args) {
         OddEvenPrinterUsingWaitNotify printer = new OddEvenPrinterUsingWaitNotify();
 
@@ -25,15 +45,7 @@ public class OddEvenPrinterUsingWaitNotify {
             @Override
             public Integer call() throws Exception {
                 Thread.currentThread().setName("Even");
-                synchronized (printer) {
-                    while (printer.counter.get() < MAX_COUNT) {
-                        if (printer.counter.get() % 2 == 1) {
-                            System.out.println("Thread: " + Thread.currentThread().getName() + "-> " + printer.counter.incrementAndGet());
-                            printer.notify();
-                        }
-                        printer.wait();
-                    }
-                }
+                printer.printEvenNumbers();
                 return null;
             }
         }
@@ -43,15 +55,7 @@ public class OddEvenPrinterUsingWaitNotify {
             @Override
             public Integer call() throws Exception {
                 Thread.currentThread().setName("Odd");
-                synchronized (printer) {
-                    while (printer.counter.get() < MAX_COUNT) {
-                        if (printer.counter.get() % 2 == 0) {
-                            System.out.println("Thread: " + Thread.currentThread().getName() + "-> " + printer.counter.incrementAndGet());
-                            printer.notify();
-                        }
-                        printer.wait();
-                    }
-                }
+                printer.printOddNumbers();
                 return null;
             }
         }
