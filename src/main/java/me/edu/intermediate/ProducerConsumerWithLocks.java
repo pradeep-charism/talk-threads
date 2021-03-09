@@ -1,4 +1,4 @@
-package nus.edu.sg.intermediate;
+package me.edu.intermediate;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package nus.edu.sg.basics;
+package me.edu.basics;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

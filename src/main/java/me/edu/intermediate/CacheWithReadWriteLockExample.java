@@ -1,4 +1,4 @@
-package nus.edu.sg.intermediate;
+package me.edu.intermediate;
 
 import java.util.HashMap;
 import java.util.Map;
